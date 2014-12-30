@@ -48,6 +48,10 @@ impl Triangle {
 
         [x / d, y / d]
     }
+
+    pub fn circumcircle_contains(&self, point: &Point) -> bool {
+        util::distance_between(&self.circumcenter, point) < self.circumradius
+    }
 }
 
 #[test]
@@ -66,4 +70,20 @@ fn test_circumcircle() {
     let triangle = Triangle::new([p1, p2, p3], [e1, e2, e3]);
     assert_eq!(triangle.circumcenter, circumcenter);
     assert_eq!(triangle.circumradius, circumradius);
+}
+
+#[test]
+fn test_circumcircle_contains() {
+    let p1 = [0.0, 0.0];
+    let p2 = [4.0, 0.0];
+    let p3 = [0.0, 5.0];
+
+    let e1 = [p1, p2];
+    let e2 = [p2, p3];
+    let e3 = [p3, p1];
+
+    let triangle = Triangle::new([p1, p2, p3], [e1, e2, e3]);
+
+    assert!(triangle.circumcircle_contains(&[1.0, 1.0]));
+    assert!(!triangle.circumcircle_contains(&[-1.0, -1.0]));
 }
