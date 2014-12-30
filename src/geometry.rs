@@ -57,13 +57,8 @@ impl Triangle {
         let bxy2 = b.x * b.x + b.y * b.y;
         let cxy2 = c.x * c.x + c.y * c.y;
 
-        let x = axy2 * (b.y - c.y)
-                + bxy2 * (c.y - a.y)
-                + cxy2 * (a.y - b.y);
-
-        let y = axy2 * (c.x - b.x)
-                + bxy2 * (a.x - c.x)
-                + cxy2 * (b.x - a.x);
+        let x = axy2 * (b.y - c.y) + bxy2 * (c.y - a.y) + cxy2 * (a.y - b.y);
+        let y = axy2 * (c.x - b.x) + bxy2 * (a.x - c.x) + cxy2 * (b.x - a.x);
 
         Point::new(x / d, y / d)
     }

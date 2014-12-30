@@ -1,6 +1,6 @@
 use std::num::Float;
 
-use graph::Point;
+use geometry::Point;
 
 pub fn distance_between(a: &Point, b: &Point) -> f64 {
     ((a.x - b.x).powi(2) + (a.y - b.y).powi(2)).sqrt()

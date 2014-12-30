@@ -1,6 +1,6 @@
 use std::num::FloatMath;
 
-use graph::{Edge, Point, Triangle};
+use geometry::{Edge, Point, Triangle};
 
 pub fn enclosing_triangle(points: &[Point]) -> Triangle {
     let xs: Vec<f64> = points.iter().map(|p| { p.x }).collect();
