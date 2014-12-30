@@ -1,6 +1,6 @@
 #![feature(slicing_syntax)]
 #![feature(globs)]
 
-mod graph;
-mod delaunay;
+pub mod graph;
+pub mod delaunay;
 
