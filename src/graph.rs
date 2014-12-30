@@ -1,20 +1,39 @@
 use util;
 
-pub type Vertex = [f64, ..2];
-pub type Edge = [Vertex, ..2];
+#[deriving(Copy, PartialEq, Show)]
+pub struct Point {
+    pub x: f64,
+    pub y: f64
+}
 
-pub type Point = Vertex;
+impl Point {
+    pub fn new(x: f64, y: f64) -> Point {
+        Point { x: x, y: y }
+    }
+}
+
+#[deriving(Copy, PartialEq, Show)]
+pub struct Edge {
+    pub v1: Point,
+    pub v2: Point
+}
+
+impl Edge {
+    pub fn new(v1: Point, v2: Point) -> Edge {
+        Edge { v1: v1, v2: v2 }
+    }
+}
 
 #[deriving(Copy)]
 pub struct Triangle {
-    pub vertices: [Vertex, ..3],
+    pub vertices: [Point, ..3],
     pub edges: [Edge, ..3],
     pub circumcenter: Point,
     pub circumradius: f64
 }
 
 impl Triangle {
-    pub fn new(vertices: [Vertex, ..3], edges: [Edge, ..3]) -> Triangle {
+    pub fn new(vertices: [Point, ..3], edges: [Edge, ..3]) -> Triangle {
         let circumcenter = Triangle::get_circumcenter(
             &vertices[0], &vertices[1], &vertices[2]);
 
@@ -28,25 +47,25 @@ impl Triangle {
         }
     }
 
-    fn get_circumcenter(a: &Vertex, b: &Vertex, c: &Vertex) -> Point {
+    fn get_circumcenter(a: &Point, b: &Point, c: &Point) -> Point {
         // http://en.wikipedia.org/wiki/Circumscribed_circle#Cartesian_coordinates
-        let d = 2.0 * (a[0] * (b[1] - c[1])
-                     + b[0] * (c[1] - a[1])
-                     + c[0] * (a[1] - b[1]));
+        let d = 2.0 * (a.x * (b.y - c.y)
+                     + b.x * (c.y - a.y)
+                     + c.x * (a.y - b.y));
 
-        let axy2 = a[0] * a[0] + a[1] * a[1];
-        let bxy2 = b[0] * b[0] + b[1] * b[1];
-        let cxy2 = c[0] * c[0] + c[1] * c[1];
+        let axy2 = a.x * a.x + a.y * a.y;
+        let bxy2 = b.x * b.x + b.y * b.y;
+        let cxy2 = c.x * c.x + c.y * c.y;
 
-        let x = axy2 * (b[1] - c[1])
-                + bxy2 * (c[1] - a[1])
-                + cxy2 * (a[1] - b[1]);
+        let x = axy2 * (b.y - c.y)
+                + bxy2 * (c.y - a.y)
+                + cxy2 * (a.y - b.y);
 
-        let y = axy2 * (c[0] - b[0])
-                + bxy2 * (a[0] - c[0])
-                + cxy2 * (b[0] - a[0]);
+        let y = axy2 * (c.x - b.x)
+                + bxy2 * (a.x - c.x)
+                + cxy2 * (b.x - a.x);
 
-        [x / d, y / d]
+        Point::new(x / d, y / d)
     }
 
     pub fn circumcircle_contains(&self, point: &Point) -> bool {
@@ -56,15 +75,15 @@ impl Triangle {
 
 #[test]
 fn test_circumcircle() {
-    let p1 = [0.0, 0.0];
-    let p2 = [4.0, 0.0];
-    let p3 = [0.0, 5.0];
+    let p1 = Point::new(0.0, 0.0);
+    let p2 = Point::new(4.0, 0.0);
+    let p3 = Point::new(0.0, 5.0);
 
-    let e1 = [p1, p2];
-    let e2 = [p2, p3];
-    let e3 = [p3, p1];
+    let e1 = Edge::new(p1, p2);
+    let e2 = Edge::new(p2, p3);
+    let e3 = Edge::new(p3, p1);
 
-    let circumcenter: Point = [2.0, 2.5];
+    let circumcenter = Point::new(2.0, 2.5);
     let circumradius = util::distance_between(&circumcenter, &p1);
 
     let triangle = Triangle::new([p1, p2, p3], [e1, e2, e3]);
@@ -74,16 +93,16 @@ fn test_circumcircle() {
 
 #[test]
 fn test_circumcircle_contains() {
-    let p1 = [0.0, 0.0];
-    let p2 = [4.0, 0.0];
-    let p3 = [0.0, 5.0];
+    let p1 = Point::new(0.0, 0.0);
+    let p2 = Point::new(4.0, 0.0);
+    let p3 = Point::new(0.0, 5.0);
 
-    let e1 = [p1, p2];
-    let e2 = [p2, p3];
-    let e3 = [p3, p1];
+    let e1 = Edge::new(p1, p2);
+    let e2 = Edge::new(p2, p3);
+    let e3 = Edge::new(p3, p1);
 
     let triangle = Triangle::new([p1, p2, p3], [e1, e2, e3]);
 
-    assert!(triangle.circumcircle_contains(&[1.0, 1.0]));
-    assert!(!triangle.circumcircle_contains(&[-1.0, -1.0]));
+    assert!(triangle.circumcircle_contains(&Point::new(1.0, 1.0)));
+    assert!(!triangle.circumcircle_contains(&Point::new(-1.0, -1.0)));
 }
