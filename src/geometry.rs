@@ -1,6 +1,6 @@
 use util;
 
-#[deriving(Copy, PartialEq, Show)]
+#[derive(Copy, Clone, PartialEq, Debug)]
 pub struct Point {
     pub x: f64,
     pub y: f64
@@ -12,7 +12,7 @@ impl Point {
     }
 }
 
-#[deriving(Copy, PartialEq, Show)]
+#[derive(Copy, Clone, PartialEq, Debug)]
 pub struct Edge {
     pub v1: Point,
     pub v2: Point
@@ -24,16 +24,16 @@ impl Edge {
     }
 }
 
-#[deriving(Copy)]
+#[derive(Clone)]
 pub struct Triangle {
-    pub vertices: [Point, ..3],
-    pub edges: [Edge, ..3],
+    pub vertices: [Point; 3],
+    pub edges: [Edge; 3],
     pub circumcenter: Point,
     pub circumradius: f64
 }
 
 impl Triangle {
-    pub fn new(vertices: [Point, ..3], edges: [Edge, ..3]) -> Triangle {
+    pub fn new(vertices: [Point; 3], edges: [Edge; 3]) -> Triangle {
         let circumcenter = Triangle::get_circumcenter(
             &vertices[0], &vertices[1], &vertices[2]);
 

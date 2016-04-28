@@ -1,5 +1,3 @@
-use std::num::FloatMath;
-
 use geometry::{Edge, Point, Triangle};
 
 pub fn enclosing_triangle(points: &[Point]) -> Triangle {
