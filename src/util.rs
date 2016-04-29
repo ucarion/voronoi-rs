@@ -1,5 +1,3 @@
-use std::num::Float;
-
 use geometry::Point;
 
 pub fn distance_between(a: &Point, b: &Point) -> f64 {
